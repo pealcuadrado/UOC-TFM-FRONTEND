@@ -42,16 +42,16 @@
                         <h3 class="panel-title">Login</h3>
                     </div>
                     <div class="panel-body">
-                   		<div class="alert alert-danger" style="display: none;" id="error_registro">
-							Texto alerta dinámico.
+                   		<div class="alert alert-danger" style="display: none;" id="error_login">
+						<!-- Texto error mostrado dinámicamente -->
 						</div>
                         <form role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" id="email_login" type="email" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Password" id="password_login" type="password" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
@@ -59,11 +59,11 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                                <a href="#" class="btn btn-lg btn-success btn-block" id="login">Login</a>
                             </fieldset>
                         </form>
                         <div> No tienes usuario? 
-	                        <a href="#" data-toggle="modal" data-target="#myModal">
+	                        <a href="#" data-toggle="modal" data-target="#modal_nuevo_usuario">
 	                        	Regístrate
 	                       	</a>
                        	</div>
@@ -74,7 +74,7 @@
     </div>
     
     <!-- Ventana modal para registro usuario -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_nuevo_usuario" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     	<div class="modal-dialog">
     		<div class="modal-content">
             	<div class="modal-header">
@@ -83,7 +83,7 @@
                 </div>
                 <div class="modal-body">
                <div class="alert alert-danger" style="display: none;" id="error_registro">
-               		Texto alerta dinámico.
+               		<!-- Texto error dinámico -->
                </div>
                 <form class="form-horizontal" action='' method="POST">
 				  <fieldset>
@@ -109,7 +109,7 @@
 				      <!-- E-mail -->
 				      <label class="control-label" for="email">E-mail</label>
 				      <div class="controls">
-				        <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+				        <input type="email" id="email" name="email" placeholder="" class="input-xlarge">
 				        <p class="help-block">Introduce tu correo electrónico</p>
 				      </div>
 				    </div>
@@ -136,7 +136,7 @@
                 </div>
                	<div class="modal-footer">
                 	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Crear usuario</button>
+                    <button type="button" class="btn btn-primary" id="nuevo_usuario">Crear usuario</button>
                 </div>
     		</div>
 		<!-- /.modal-content -->
@@ -144,6 +144,7 @@
 	<!-- /.modal-dialog -->
     </div>
 
+	
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
@@ -155,6 +156,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+    
+    <!-- JavaScript personalizado -->
+	<script src="../js/usuario/usuario.js"></script>
 
 </body>
 
