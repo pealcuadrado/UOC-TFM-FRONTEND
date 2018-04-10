@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" ng-app="listoplan">
 
 <head>
 
@@ -32,7 +32,7 @@
 
 </head>
 
-<body>
+<body ng-controller="modalController">
 
     <div id="wrapper">
 
@@ -378,9 +378,19 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                    <div class="col-lg-12" id="contenido">
+                    <div class="col-lg-12" id="contenido" ng-controller="datosUsuarioController">
+                    Hola! {{nombre}} {{apellido}} ({{id_usuario}})
                     </div>
                     <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                	<a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('nota')">
+	               		Nueva nota
+	               </a> <br>
+	               <a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('lista')">
+	               		Nueva lista
+	               </a>
                 </div>
                 <!-- /.row -->
             </div>
@@ -390,7 +400,30 @@
 
     </div>
     <!-- /#wrapper -->
+    
+    <!-- Ventana modal genérica -->
+    <div class="modal fade" id="modal_generico" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true" >
+    	<div class="modal-dialog" >
+    		<div class="modal-content">
+            	<div class="modal-header">
+                	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  	<h4 class="modal-title" id="myModalLabel">{{modal.titulo}}</h4>
+                </div>
+                <div class="modal-body" id="contenido_modal">
+                </div>
+               	<div class="modal-footer">
+                	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="accion_modal">{{modal.boton}}</button>
+                </div>
+    		</div>
+		<!-- /.modal-content -->
+        </div>
+	<!-- /.modal-dialog -->
+    </div>
 
+    <!-- angularjs -->
+    <script src="../js/angularjs-1.6.9.js"></script>
+    
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
