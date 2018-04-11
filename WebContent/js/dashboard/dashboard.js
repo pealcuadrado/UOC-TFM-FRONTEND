@@ -1,7 +1,15 @@
 var url="http://localhost:8080/";
 
 var listoplan= angular.module('listoplan',[]);
-listoplan.controller('datosUsuarioController', function($scope,$http) {
+
+listoplan.service('InfoUsuario', function() {
+	this.nombre;
+	this.apellido;
+	this.id_usuario;
+	this.token;
+})
+
+listoplan.controller('datosUsuarioController', function($scope,$http,InfoUsuario) {
 	token=localStorage.getItem("token");
 	if(token==null){
 		console.log("Token no disponible");
@@ -9,6 +17,7 @@ listoplan.controller('datosUsuarioController', function($scope,$http) {
 	}
 	else{
 		console.log(token);
+		InfoUsuario.token=token;
 	}
     /*$.ajax({
     	type:"get",
@@ -32,9 +41,12 @@ listoplan.controller('datosUsuarioController', function($scope,$http) {
     	  url: url+"usuarios/informacion_usuario/0",
     	  headers: {"token":token},
     	}).then(function successCallback(response) {
-        	$scope.nombre=response.data.nombre;
-        	$scope.apellido=response.data.apellido;
-        	$scope.id_usuario=response.data.id_usuario;
+        	InfoUsuario.nombre=response.data.nombre;
+        	InfoUsuario.apellido=response.data.apellido;
+        	InfoUsuario.id_usuario=response.data.id_usuario;
+        	$scope.nombre=InfoUsuario.nombre;
+        	$scope.apellido=InfoUsuario.apellido;
+        	$scope.id_usuario=InfoUsuario.id_usuario;
     	  }, function errorCallback(response) {
     		  	console.log(response.data.status);
     	    	window.location.replace("login.html");
@@ -44,16 +56,49 @@ listoplan.controller('datosUsuarioController', function($scope,$http) {
 listoplan.controller('modalController', function($scope) {
 	$scope.refrescarModal= function(elemento){
 		if(elemento=="nota"){
-			$("#contenido_modal").load("modals/nota.html");
-			$scope.modal={"titulo":"Nota", "boton":"Guardar nota"};
+			$scope.plantilla='modals/nota.html';
+			//$("#contenido_modal").load("modals/nota.html");
+			$scope.modal={"titulo":"Nota"};
 		}
 		if(elemento=="lista"){
-			$("#contenido_modal").load("modals/lista.html");
-			$scope.modal={"titulo":"Lista", "boton":"Guardar lista"};
+			$scope.plantilla='modals/lista.html';
+			$scope.modal={"titulo":"Lista"};
 		}
+		
 	}
 })
 
+listoplan.controller('notaController',function($scope,$http,InfoUsuario){
+	$scope.guardarNota=function(){
+		$("#error_nota").hide();
+		$("#ok_nota").hide();
+		if($scope.titulo==undefined || $scope.titulo.length==0){
+			$("#error_nota").show();
+			$scope.error_msg="La nota debe tener un título";
+			return;
+		}
+	    $http({
+	    	  method: 'POST',
+	    	  url: url+"/notas/nueva_nota",
+	    	  headers: {"token":InfoUsuario.token},
+	    	  data:{
+	    		  "id":InfoUsuario.id_usuario.toString(),
+	    		  "titulo":$scope.titulo,
+	    		  "contenido":$scope.contenido,
+	    		  "ambito":"usuario"
+	    	  }
+	    	}).then(function successCallback(response) {
+		        	$("#ok_nota").show();
+		        	$scope.ok_msg="La nota se ha guardado correctamente";
+	    	  }, function errorCallback(response) {
+	  				$("#error_nota").show();
+	  				$scope.error_msg="Se ha producido un error al guardar la nota";
+	  				console.log(response.data.status);
+	    	    	
+	    	  });
+
+	}
+});
 
 $("#logout").click(function(evento){
 	evento.preventDefault();
