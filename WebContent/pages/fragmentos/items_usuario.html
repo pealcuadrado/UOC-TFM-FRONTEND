@@ -1,11 +1,5 @@
 <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Basic Tabs
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#notas" data-toggle="tab">Notas</a>
@@ -16,75 +10,56 @@
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" id="notas">
-                                    <hr>
-								    <h1>Título Nota 1</h1>
-								    <p>Contenido nota 1</p>
-								    <div>
-								        <span class="badge badge-success">Modificado en 2012-08-02 20:47:04</span><div class="pull-right"><span class="label">nota personal</span> </div>
-								    </div>     
-								    <hr>
+                                <div class="tab-pane fade in active" id="notas" ng-controller="notaController" ng-init="getNotasUsuario()">
+                                	<div class="row">
+										<a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('nota',0)">
+											Nueva nota
+										</a> 
+									</div>
+                                	<div ng-repeat="nota in notas">
+	                                    <hr/>
+	                                    <h1>
+									    	<a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('nota',nota.idNota)">
+									    		{{nota.titulo}}
+									    	</a>
+									    </h1>
+									    <p>{{nota.contenido}}</p>
+									    <div>
+									        <span class="badge badge-success">Modificado en {{nota.fechaModificacion}} {{nota.horaModificacion}}</span><div class="pull-right"><span class="label">nota personal</span> </div>
+									    </div>     
+									    <hr/>
+								    </div>
                                 </div>
-                                <div class="tab-pane fade" id="listas">
+                                <div class="tab-pane fade" id="listas" ng-controller="listaController" ng-init="getListasUsuario()">
+                                  	<div class="row">
+							        	<a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('lista',0)">
+							             	Nueva lista
+							          	</a>
+						            </div>
                                     <div class="row">
 						                <div class="col-lg-12">
-						                    <div class="panel panel-default">
-						                        <div class="panel-heading">
-						                            Collapsible Accordion Panel Group
-						                        </div>
-						                        <!-- .panel-heading -->
-						                        <div class="panel-body">
-						                            <div class="panel-group" id="accordion">
-						                                <div class="panel panel-default">
-						                                    <div class="panel-heading">
-						                                        <h4 class="panel-title">
-						                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Collapsible Group Item #1</a>
-						                                        </h4>
-						                                    </div>
-						                                    <div id="collapseOne" class="panel-collapse collapse in">
-						                                        <div class="panel-body">
-						                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						                                        </div>
-						                                    </div>
-						                                </div>
-						                                <div class="panel panel-default">
-						                                    <div class="panel-heading">
-						                                        <h4 class="panel-title">
-						                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Collapsible Group Item #2</a>
-						                                        </h4>
-						                                    </div>
-						                                    <div id="collapseTwo" class="panel-collapse collapse">
-						                                        <div class="panel-body">
-						                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						                                        </div>
-						                                    </div>
-						                                </div>
-						                                <div class="panel panel-default">
-						                                    <div class="panel-heading">
-						                                        <h4 class="panel-title">
-						                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Collapsible Group Item #3</a>
-						                                        </h4>
-						                                    </div>
-						                                    <div id="collapseThree" class="panel-collapse collapse">
-						                                        <div class="panel-body">
-						                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-						                                        </div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                        </div>
-						                        <!-- .panel-body -->
-						                    </div>
-						                    <!-- /.panel -->
+						                	<div class="panel-group" id="accordion">
+						         				<div class="panel panel-default" ng-repeat="lista in listas">
+						                			<div class="panel-heading">
+						                         		<h4 class="panel-title">
+						                        			<a data-toggle="collapse" data-parent="#accordion" href="#lista_{{lista.idLista}}">{{lista.nombre}}</a>
+						                      			</h4>
+						                 			</div>
+						              				<div id="lista_{{lista.idLista}}" class="panel-collapse collapse">
+						            					<div class="panel-body">
+						             						{{lista.descripcion}}
+						                    			</div>
+						                    			<div>
+									        				<span class="badge badge-success">Modificado en {{lista.fecha}} {{lista.hora}}</span><div class="pull-right"><span class="label">nota personal</span> </div>
+									    				</div><br/>  
+						            				</div>
+						        				</div>
+						  					</div>
 						                </div>
 						                <!-- /.col-lg-12 -->
 						            </div>
 						            <!-- /.row -->
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
                 </div>
 </div>
