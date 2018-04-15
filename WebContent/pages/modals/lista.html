@@ -18,11 +18,12 @@
         <div class="form-group">
         	<div class="col-lg-4">
         		<label>Tipo de lista</label>
-               	<select class="form-control" ng-model="tipo_lista" id="tipoLista" autocomplete="off">
+               	<select class="form-control" ng-model="tipo_lista" id="tipoLista" autocomplete="off" ng-show="id_lista==0">
 			      <option value="ORDENADA">Ordenada</option>
-			      <option selected="selected" value="CHECKLIST">Checklist</option>
-			      <option value="ASIGNACION">Asignación</option>
+			      <option value="CHECKLIST">Checklist</option>
+			      <option value="REPARTICION">Asignación</option>
 			    </select>
+			    <div ng-if="id_lista>0">{{tipo_lista}}</div>
 			</div>
         </div>
 	</form>
@@ -30,6 +31,6 @@
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
     <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarLista(id_lista)">Guardar lista</button>
-    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarLista(id_lista)" style="display: none;">Eliminar lista</button>
+    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarLista(id_lista)" ng-if="id_lista>0">Eliminar lista</button>
 </div>
 </div>

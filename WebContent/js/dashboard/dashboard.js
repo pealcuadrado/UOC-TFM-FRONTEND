@@ -66,7 +66,26 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 		if(elemento=="lista"){
 			$scope.plantilla='modals/lista.html';
 			$scope.modal={"titulo":"Lista"};
-			$scope.id_lista=0;
+			if(id > 0){
+		        $http({
+			      	  method: 'GET',
+			      	  url: url+"listas/detalle_lista_usuario/"+id,
+			      	  headers: {"token":InfoUsuario.token},
+			      	}).then(function successCallback(response) {
+			          	$scope.id_lista=response.data.idLista;
+			          	$scope.nombre=response.data.nombre;
+			          	$scope.descripcion=response.data.descripcion;
+			          	$scope.tipo_lista=response.data.tipoLista;
+			      	}, function errorCallback(response) {
+			      		 console.log(response.data.status);
+			      	});
+			}
+			else{
+	          	$scope.id_lista=0;
+	          	$scope.nombre="";
+	          	$scope.descripcion="";
+	          	$scope.tipo_lista="";
+			}
 		}
 		
 	}
@@ -172,11 +191,6 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 			$scope.error_msg="La lista debe tener un tipo";
 			return;
 		}
-		if($scope.descripcion==undefined || $scope.descripcion==null || $scope.descripcion.length==0){
-			$("#error_lista").show();
-			$scope.error_msg="La lista debe tener una descripción";
-			return;
-		}
 		var reqUrl;
 		if(id_lista==0){
 			//Nueva nota
@@ -217,23 +231,23 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	      		 console.log(response.data.status);
 	      	});
 	    };
-	    $scope.desactivarNota=function(id_nota){
-	    	if(confirm("Estás seguro que deseas eliminar la nota?") && id_nota > 0){
+	    $scope.desactivarLista=function(id_lista){
+	    	if(confirm("Estás seguro que deseas eliminar la lista?") && id_lista > 0){
 	    		$http({
 	  	    	  method: 'POST',
-	  	    	  url: url+"/notas/desactivacion_nota",
+	  	    	  url: url+"listas/desactivacion_lista",
 	  	    	  headers: {"token":InfoUsuario.token},
 	  	    	  data:{
 	  	    		  "id":InfoUsuario.id_usuario.toString(),
-	  	    		  "idNota":id_nota.toString(),
+	  	    		  "idLista":id_lista.toString(),
 	  	    		  "ambito":"usuario"
 	  	    	  }
 	  	    	}).then(function successCallback(response) {
-	  		        	alert("La nota se ha eliminado correctamente");
+	  		        	alert("La lista se ha eliminado correctamente");
 	  		        	$('#modal_generico').modal('toggle');
 	  	    	  }, function errorCallback(response) {
 	  	  				$("#error_nota").show();
-	  	  				$scope.error_msg="Se ha producido un error al eliminar la nota";
+	  	  				$scope.error_msg="Se ha producido un error al eliminar la lista";
 	  	  				console.log(response.data.status);
 	  	    	    	
 	  	    	  });
@@ -243,4 +257,16 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	    	
 	    }
 
+});
+
+listoplan.controller("menuController", function($scope,$http,InfoUsuario) {
+    $http({
+    	  method: 'GET',
+    	  url: url+"grupos/grupos_usuario/",
+    	  headers: {"token":InfoUsuario.token},
+    	}).then(function successCallback(response) {
+        	$scope.grupos=response.data;
+    	}, function errorCallback(response) {
+    		 console.log(response.data.status);
+    	});
 });
