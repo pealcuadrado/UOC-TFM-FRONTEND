@@ -8,6 +8,10 @@ listoplan.service('InfoUsuario', function() {
 	this.id_usuario;
 	this.token;
 })
+listoplan.service('InfoGrupo', function() {
+	this.infoGrupo;
+	this.miembros;
+})
 
 listoplan.controller('datosUsuarioController', function($scope,$http,InfoUsuario) {
 	token=localStorage.getItem("token");
@@ -38,7 +42,7 @@ listoplan.controller('datosUsuarioController', function($scope,$http,InfoUsuario
 });
 
 listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
-	$scope.refrescarModal= function(elemento,id){
+	$scope.refrescarModal= function(elemento,id,id_grupo){
 		if(elemento=="nota"){
 			$scope.plantilla='modals/nota.html';
 			//$("#contenido_modal").load("modals/nota.html");
@@ -92,7 +96,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 })
 
 listoplan.controller('notaController',function($scope,$http,InfoUsuario){
-	$scope.guardarNota=function(id_nota){
+	$scope.guardarNota=function(id_nota,id_grupo){
 		$("#error_nota").hide();
 		$("#ok_nota").hide();
 		if($scope.titulo==undefined || $scope.titulo.length==0){
@@ -128,10 +132,17 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario){
 	    	    	
 	    	  });
 		};
-	    $scope.getNotasUsuario=function(){
+	    $scope.getNotasUsuario=function(id_grupo){
+	    	console.log(id_grupo);
+	    	var reqUrl;
+	    	if(id_grupo > 0){
+	    		reqUrl=url+"/notas/notas_grupo/"+id_grupo;
+	    	}else{
+	    		reqUrl=url+"/notas/notas_usuario";
+	    	}
 	        $http({
 	      	  method: 'GET',
-	      	  url: url+"/notas/notas_usuario",
+	      	  url: reqUrl,
 	      	  headers: {"token":InfoUsuario.token},
 	      	}).then(function successCallback(response) {
 	          	$scope.notas=response.data;
@@ -139,7 +150,7 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario){
 	      		 console.log(response.data.status);
 	      	});
 	    };
-	    $scope.desactivarNota=function(id_nota){
+	    $scope.desactivarNota=function(id_nota,id_grupo){
 	    	if(confirm("Estás seguro que deseas eliminar la nota?") && id_nota > 0){
 	    		$http({
 	  	    	  method: 'POST',
@@ -164,11 +175,7 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario){
 	    	}
 	    	
 	    }
-
-});
-
-listoplan.controller('dashboardController', function($scope){
-	$scope.vistaDashboard="fragmentos/items_usuario.html";
+	    $scope.$on('seleccion', function(event, data) { $scope.getNotasUsuario(data)});
 });
 
 $("#logout").click(function(evento){
@@ -178,7 +185,7 @@ $("#logout").click(function(evento){
 });
 
 listoplan.controller('listaController',function($scope,$http,InfoUsuario){
-	$scope.guardarLista=function(id_lista){
+	$scope.guardarLista=function(id_lista,id_grupo){
 		$("#error_lista").hide();
 		$("#ok_lista").hide();
 		if($scope.nombre==undefined || $scope.nombre.length==0){
@@ -220,7 +227,8 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	    	    	
 	    	  });
 		};
-	    $scope.getListasUsuario=function(){
+	    $scope.getListasUsuario=function(id_grupo){
+	    	console.log(id_grupo);
 	        $http({
 	      	  method: 'GET',
 	      	  url: url+"listas/listas_usuario/",
@@ -231,7 +239,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	      		 console.log(response.data.status);
 	      	});
 	    };
-	    $scope.desactivarLista=function(id_lista){
+	    $scope.desactivarLista=function(id_lista,id_grupo){
 	    	if(confirm("Estás seguro que deseas eliminar la lista?") && id_lista > 0){
 	    		$http({
 	  	    	  method: 'POST',
@@ -256,7 +264,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	    	}
 	    	
 	    }
-
+	    $scope.$on('seleccion', function(event, data) { $scope.getListasUsuario(data)});
 });
 
 listoplan.controller("menuController", function($scope,$http,InfoUsuario) {
@@ -269,4 +277,45 @@ listoplan.controller("menuController", function($scope,$http,InfoUsuario) {
     	}, function errorCallback(response) {
     		 console.log(response.data.status);
     	});
+});
+
+listoplan.controller('dashboardController', function($scope,$http,InfoUsuario,InfoGrupo) {
+	
+	$scope.refrescarDashboard= function(idGrupo){
+		$scope.id_grupo=idGrupo;
+		if(idGrupo > 0){
+			//Si idGrupo > 0 -> Obtenemos la información del grupo
+		    $http({
+		    	  method: 'GET',
+		    	  url: url+"grupos/informacion_grupo/"+idGrupo,
+		    	  headers: {"token":InfoUsuario.token},
+		    	}).then(function successCallback(response) {
+		        	 InfoGrupo.infoGrupo=response.data;
+		        	 $scope.infoGrupo=InfoGrupo.infoGrupo;
+		        	 $http({
+		        	    	  method: 'GET',
+		        	    	  url: url+"grupos/usuarios_grupo/"+idGrupo,
+		        	    	  headers: {"token":InfoUsuario.token},
+		        	    	}).then(function successCallback(response) {
+		        	    		InfoGrupo.miembros=response.data;
+		        	        	var miembrosString="";
+		        	        	var c;
+		        	        	for (c=0;c< InfoGrupo.miembros.length; c++){
+		        	        		miembrosString += InfoGrupo.miembros[c].nombre + InfoGrupo.miembros[c].apellido;
+		        	        		if(c<InfoGrupo.miembros.length-1){
+		        	        			miembrosString += ', ';
+		        	        		}
+		        	        	}
+		        	        	$scope.miembrosString=miembrosString;
+		        	    	}, function errorCallback(response) {
+		        	    		 console.log(response.data.status);
+		        	 });
+		    	}, function errorCallback(response) {
+		    		 console.log(response.data.status);
+		    	});
+		}
+		$scope.$broadcast('seleccion', idGrupo);
+		$scope.vistaDashboard="fragmentos/items_usuario.html";
+	}
+	$scope.refrescarDashboard(0);
 });
