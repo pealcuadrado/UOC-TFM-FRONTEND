@@ -3,6 +3,7 @@
                             <!-- Nav tabs -->
                             <h4 ng-show="id_grupo>0">Grupo: {{infoGrupo.nombre}}</h4>
                             <h6 ng-show="id_grupo>0">Miembros: {{miembrosString}}</h6>
+                            <a href="" ng-show="id_grupo>0" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('grupo',0,id_grupo)" >Editar grupo</a>
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#notas" data-toggle="tab">Notas</a>
                                 </li>
@@ -44,13 +45,45 @@
 						         				<div class="panel panel-default" ng-repeat="lista in listas">
 						                			<div class="panel-heading">
 						                         		<h4 class="panel-title">
-						                        			<a data-toggle="collapse" data-parent="#accordion" href="#lista_{{lista.idLista}}">{{lista.nombre}}</a>
+						                        			<a data-toggle="collapse" data-parent="#accordion" href="#lista_{{lista.idLista}}" ng-click="getItemsLista(lista.idLista,id_grupo)">{{lista.nombre}}</a>
 						                        			<a href="" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('lista',lista.idLista,id_grupo)">icono_editar</a>
 						                      			</h4>
 						                 			</div>
 						              				<div id="lista_{{lista.idLista}}" class="panel-collapse collapse">
 						            					<div class="panel-body">
 						             						{{lista.descripcion}}
+						                    			</div>
+						                    			<div ng-repeat="item in items">
+						                    				<hr/>
+						                    				{{item.nombre}} - {{item.valor}}
+						                    				<button type="button" class="btn btn-warning" ng-click="eliminarItem(lista.idLista,item.idItem,id_grupo)">X</button>
+						                    				<hr/>
+						                    			</div>
+						                    			<div class="row" ng-if="lista.tipoLista=='CHECKLIST'">
+						                    				<div>
+						                    					<div class="col-lg-3">
+								                    					<input class="form-control" placeholder="Item" id="item_chk"></input>
+							                    				</div>
+							                    				<div class="col-lg-1">
+							                    					<input type="checkbox" value="" style="width: 30px; height: 30px;" id="valor_chk"></input>
+							                    				</div>
+							                    				<div class="col-lg-3">
+							                    					<button type="button" class="btn btn-success" ng-click="nuevoItem(lista.idLista,id_grupo,'CHECKLIST')">Añadir</button>
+							                    				</div>
+						                    				</div>
+						                    			</div>
+						                    			<div class="row" ng-if="lista.tipoLista=='REPARTICION'">
+						                    				<div>
+						                    					<div class="col-lg-3">
+								                    					<input class="form-control" placeholder="Item" id="item"></input>
+							                    				</div>
+							                    				<div class="col-lg-3">
+							                    					<input class="form-control" placeholder="Valor" id="valor"></input>
+							                    				</div>
+							                    				<div class="col-lg-3">
+							                    					<button type="button" class="btn btn-success" ng-click="nuevoItem(lista.idLista,id_grupo,'ASIGNACION')">Añadir</button>
+							                    				</div>
+						                    				</div>
 						                    			</div>
 						                    			<div>
 									        				<span class="badge badge-success">Modificado en {{lista.fecha}} {{lista.hora}}</span><div class="pull-right"><span class="label">nota personal</span> </div>

@@ -80,7 +80,9 @@
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Grupos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#"> + Nuevo grupo</a>
+                                    <a href="#" data-toggle="modal" data-target="#modal_generico" ng-click="refrescarModal('grupo',0,0)"> 
+                                    	+ Nuevo grupo
+                                    </a>
                                 </li>
                                 <li ng-repeat="grupo in grupos">
                                     <a href="" ng-click="refrescarDashboard(grupo.idGrupo)">{{grupo.nombre}} ({{grupo.idGrupo}})</a>
