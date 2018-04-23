@@ -55,7 +55,9 @@
 						                    			</div>
 						                    			<div ng-repeat="item in items">
 						                    				<hr/>
-						                    				{{item.nombre}} - {{item.valor}}
+						                    				<span id="item_{{item.idItem}}">{{item.nombre}}</span>
+						                    				<input type="text" id="item_value_{{item.idItem}}" ng-model="item.valor" ng-if="lista.tipoLista=='REPARTICION'" ng-blur="guardarItem(lista.idLista,id_grupo,'REPARTICION',item.idItem)"></input>
+						                    				<input type="checkbox" id="item_value_{{item.idItem}}" style="width: 30px; height: 30px;" ng-model="item.valor" ng-if="lista.tipoLista=='CHECKLIST'" ng-true-value="'1'" ng-false-value="'0'" ng-change="guardarItem(lista.idLista,id_grupo,'CHECKLIST',item.idItem)"></input>
 						                    				<button type="button" class="btn btn-warning" ng-click="eliminarItem(lista.idLista,item.idItem,id_grupo)">X</button>
 						                    				<hr/>
 						                    			</div>
@@ -68,7 +70,7 @@
 							                    					<input type="checkbox" value="" style="width: 30px; height: 30px;" id="valor_chk"></input>
 							                    				</div>
 							                    				<div class="col-lg-3">
-							                    					<button type="button" class="btn btn-success" ng-click="nuevoItem(lista.idLista,id_grupo,'CHECKLIST')">Añadir</button>
+							                    					<button type="button" class="btn btn-success" ng-click="guardarItem(lista.idLista,id_grupo,'CHECKLIST',0)">Añadir</button>
 							                    				</div>
 						                    				</div>
 						                    			</div>
@@ -81,7 +83,7 @@
 							                    					<input class="form-control" placeholder="Valor" id="valor"></input>
 							                    				</div>
 							                    				<div class="col-lg-3">
-							                    					<button type="button" class="btn btn-success" ng-click="nuevoItem(lista.idLista,id_grupo,'ASIGNACION')">Añadir</button>
+							                    					<button type="button" class="btn btn-success" ng-click="guardarItem(lista.idLista,id_grupo,'ASIGNACION',0)">Añadir</button>
 							                    				</div>
 						                    				</div>
 						                    			</div>

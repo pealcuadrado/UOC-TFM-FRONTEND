@@ -94,7 +94,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			      	}).then(function successCallback(response) {
 			          	$scope.id_lista=response.data.idLista;
 			          	$scope.id_grupo=id_grupo;
-			          	$scope.nombre=response.data.nombre;
+			          	$scope.nombreLista=response.data.nombre;
 			          	$scope.descripcion=response.data.descripcion;
 			          	$scope.tipo_lista=response.data.tipoLista;
 			      	}, function errorCallback(response) {
@@ -104,7 +104,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			else{
 	          	$scope.id_lista=0;
 	          	$scope.id_grupo=id_grupo;
-	          	$scope.nombre="";
+	          	$scope.nombreLista="";
 	          	$scope.descripcion="";
 	          	$scope.tipo_lista="";
 			}
@@ -151,7 +151,6 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario){
       	});
     };
 	$scope.guardarNota=function(id_nota,id_grupo){
-		//TODO: CON DOS GRUPOS NO PILLA BIEN EL ID_GRUPO (LO GUARDA COMO USUARIO id_grupo=0)
 		$("#error_nota").hide();
 		$("#ok_nota").hide();
 		if($scope.titulo==undefined || $scope.titulo.length==0){
@@ -355,8 +354,9 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 		      	});
 	    };
 	    
-	    $scope.nuevoItem=function(id_lista,id_grupo,tipoLista){
+	    $scope.guardarItem=function(id_lista,id_grupo,tipoLista,id_item){
 			var reqAmbito;
+			var reqUrl;
 			if(id_grupo==0){
 				reqAmbito="usuario";
 			}else{
@@ -376,13 +376,29 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 				reqItem=$("#item").val();
 				reqValor=$("#valor").val();
 			}
+			if(id_item==0){
+				reqUrl=url+"listas/nuevo_item";
+			}else{
+				reqUrl=url+"listas/modificacion_item";
+				reqItem=$("#item_"+id_item).text();
+				reqValor=$("#item_value_"+id_item).val();
+				if(tipoLista=="CHECKLIST"){
+					reqValor=$("#item_value_"+id_item).is(":checked");
+					if(reqValor==true){
+						reqValor="1";
+					}else{
+						reqValor="0";
+					}
+				}
+			}
 		    $http({
 		    	  method: 'POST',
-		    	  url: url+"listas/nuevo_item",
+		    	  url: reqUrl,
 		    	  headers: {"token":InfoUsuario.token},
 		    	  data:{
 		    		  "id":id_grupo.toString(),
 		    		  "idLista":id_lista.toString(),
+		    		  "idItem":id_item.toString(),
 		    		  "nombre":reqItem,
 		    		  "valor":reqValor,
 		    		  "orden":"1",
