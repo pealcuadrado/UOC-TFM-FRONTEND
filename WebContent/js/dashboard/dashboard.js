@@ -97,6 +97,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			          	$scope.nombreLista=response.data.nombre;
 			          	$scope.descripcion=response.data.descripcion;
 			          	$scope.tipo_lista=response.data.tipoLista;
+			          	$scope.compartida=response.data.compartida;
 			      	}, function errorCallback(response) {
 			      		 console.log(response.data.status);
 			      	});
@@ -127,6 +128,12 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			      		 console.log(response.data.status);
 			      	});
 			}
+		}
+		
+		if(elemento=="listas_compartidas"){
+			$scope.id_grupo=id_grupo;
+			$scope.plantilla='modals/listas_compartidas.html';
+			$scope.modal={"titulo":"Buscar listas compartidas"};
 		}
 		
 	}
@@ -433,6 +440,33 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 		    	  });
 	    }
 	    
+	    $scope.comparticionLista=function(id_lista,id_grupo,comp){
+			if(id_grupo==0){
+				ambito="USUARIO"
+			}else{
+				ambito="GRUPO"
+			}
+			$http({
+		    	  method: 'POST',
+		    	  url: url+"listas/comparticion_lista",
+		    	  headers: {"token":InfoUsuario.token},
+		    	  data:{
+		    		  "idLista":id_lista.toString(),
+		    		  "id": id_grupo.toString(),
+		    		  "compartida":comp.toString(),
+		    		  "ambito":ambito
+		    	  }
+		    	}).then(function successCallback(response) {
+		    		$("#ok_grupo").show();
+					$scope.ok_msg="La lista se ha copiado correctamente";
+		    	  }, function errorCallback(response) {
+		  				$("#error_grupo").show();
+		  				$scope.error_msg="Se ha producido un error al copiar la lista";
+		  				console.log(response.data.status);
+		    	  });
+	    };
+	    
+	    
 	    $scope.$on('seleccion', function(event, data) { $scope.getListasUsuario(data)});
 });
 
@@ -607,5 +641,44 @@ listoplan.controller('gruposController', function($scope,$http,InfoUsuario,InfoG
 	    		 console.log(response.data.status);
 	    	});
 	};
+});
+
+listoplan.controller('listasCompartidasController', function($scope,$http,InfoUsuario){
+	$scope.buscarListasCompartidas=function(){
+	    $http({
+	    	  method: 'GET',
+	    	  url: url+"listas/listas_compartidas?filtro="+$scope.filtro,
+	    	  headers: {"token":InfoUsuario.token}
+	    	}).then(function successCallback(response) {
+	        	$scope.resultadolistas=response.data;
+	    	}, function errorCallback(response) {
+	    		 console.log(response.data.status);
+	    	});
+	};
+	$scope.copiarLista= function(id_grupo, id_lista){
+		var ambito;
+		if(id_grupo==0){
+			ambito="USUARIO"
+		}else{
+			ambito="GRUPO"
+		}
+		$http({
+	    	  method: 'POST',
+	    	  url: url+"listas/duplicacion_lista",
+	    	  headers: {"token":InfoUsuario.token},
+	    	  data:{
+	    		  "idLista":id_lista.toString(),
+	    		  "id": id_grupo.toString(),
+	    		  "ambito":ambito
+	    	  }
+	    	}).then(function successCallback(response) {
+	    		$("#ok_grupo").show();
+				$scope.ok_msg="La lista se ha copiado correctamente";
+	    	  }, function errorCallback(response) {
+	  				$("#error_grupo").show();
+	  				$scope.error_msg="Se ha producido un error al copiar la lista";
+	  				console.log(response.data.status);
+	    	  });
+	}
 });
 

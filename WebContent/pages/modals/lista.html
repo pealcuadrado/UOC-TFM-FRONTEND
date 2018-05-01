@@ -30,6 +30,8 @@
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
     <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarLista(id_lista,id_grupo)">Guardar lista</button>
+    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="comparticionLista(id_lista,id_grupo,1)" ng-if="id_lista>0 && compartida==0">Compartir</button>
+    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="comparticionLista(id_lista,id_grupo,0)" ng-if="id_lista>0 && compartida==1">Dejar de compartir</button>
     <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarLista(id_lista,id_grupo)" ng-if="id_lista>0">Eliminar lista</button>
 </div>
 </div>
