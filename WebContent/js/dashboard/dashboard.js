@@ -276,7 +276,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 	    	  data:{
 	    		  "id":id_grupo.toString(),
 	    		  "idLista":id_lista.toString(),
-	    		  "nombre":$scope.nombre,
+	    		  "nombre":$scope.nombreLista,
 	    		  "descripcion":$scope.descripcion,
 	    		  "tipoLista":$scope.tipo_lista,
 	    		  "ambito":reqAmbito
@@ -355,6 +355,17 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 		      	  headers: {"token":InfoUsuario.token},
 		      	}).then(function successCallback(response) {
 		      		//console.log(response.data);
+		      		var total=response.data.items.length;
+		      		var marcados=0;
+		      		var c;
+		      		for (c=0;c<response.data.items.length;c++){
+		      			if(response.data.items[c].valor=="1"){
+		      				marcados++;
+		      			}
+		      		}
+		      		var ratio=Math.round(marcados/total*100);
+		      		if(total==0) ratio=0;
+		      		$scope.ratio=ratio+'%';
 		          	$scope.items=response.data.items;
 		      	}, function errorCallback(response) {
 		      		 console.log(response.data.status);
@@ -373,12 +384,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario){
 			var reqItem;
 			if(tipoLista=="CHECKLIST"){
 				reqItem=$("#item_chk").val();
-				if ($('#valor_chk').is(":checked")){
-					reqValor="1";
-				}
-				else {
-					reqValor="0";
-				}
+				reqValor="0";
 			}else{
 				reqItem=$("#item").val();
 				reqValor=$("#valor").val();

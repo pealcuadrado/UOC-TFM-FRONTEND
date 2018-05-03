@@ -9,7 +9,7 @@
 	<form role="form" name="formLista" method="POST">
 		<div class="form-group">
         	<label>Título</label>
-            <input class="form-control" placeholder="Nombre de la lista" ng-model="nombreLista" ng-value="nombre"></input>
+            <input class="form-control" placeholder="Nombre de la lista" ng-model="nombreLista" ng-value="nombreLista"></input>
         </div>
         <div class="form-group">
         	<label>Descripcion</label>
@@ -22,16 +22,16 @@
 			      <option value="CHECKLIST">Checklist</option>
 			      <option value="REPARTICION">Asignación</option>
 			    </select>
-			    <div ng-if="id_lista>0">{{tipo_lista}}</div>
+			    <div ng-if="id_lista>0" class="listype-text">{{tipo_lista}}</div>
 			</div>
         </div>
 	</form>
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarLista(id_lista,id_grupo)">Guardar lista</button>
-    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="comparticionLista(id_lista,id_grupo,1)" ng-if="id_lista>0 && compartida==0">Compartir</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove fa-fw"></i> Cerrar</button>
+    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarLista(id_lista,id_grupo)"><i class="fa fa-save fa-fw"></i> Guardar lista</button>
+    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="comparticionLista(id_lista,id_grupo,1)" ng-if="id_lista>0 && compartida==0"><i class="fa fa-share-alt fa-fw"></i> Compartir</button>
     <button type="button" class="btn btn-primary" id="accion_modal" ng-click="comparticionLista(id_lista,id_grupo,0)" ng-if="id_lista>0 && compartida==1">Dejar de compartir</button>
-    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarLista(id_lista,id_grupo)" ng-if="id_lista>0">Eliminar lista</button>
+    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarLista(id_lista,id_grupo)" ng-if="id_lista>0"><i class="fa fa-trash-o fa-fw"></i> Eliminar lista</button>
 </div>
 </div>

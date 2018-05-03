@@ -13,8 +13,8 @@
         </div>
         <div>
         	<div ng-repeat="miembro in infoGrupo.miembros"> 
-        			{{miembro.nombre}} {{miembro.apellido}}
-        			<button type="button" class="btn btn-warning" ng-click="desvincularUsuario(miembro.id_usuario, id_grupo)" ng-if="miembro.id_usuario!=id_usuario">X</button>
+        			<i class="fa fa-user fa-fw"></i> {{miembro.nombre}} {{miembro.apellido}}
+        			<button type="button" class="btn btn-warning" ng-click="desvincularUsuario(miembro.id_usuario, id_grupo)" ng-if="miembro.id_usuario!=id_usuario"><i class="fa fa-unlink fa-fw"></i> Desvincular</button>
         		<hr/>
         	</div>
         </div>
@@ -30,15 +30,15 @@
                      	Administrador
                      	</input>
                      </label>
-        			<button type="button" class="btn btn-success" ng-click="vincularUsuario(usuario.id_usuario, id_grupo)" ng-if="usuario.id_usuario!=id_usuario">Añadir</button>
+        			<button type="button" class="btn btn-success" ng-click="vincularUsuario(usuario.id_usuario, id_grupo)" ng-if="usuario.id_usuario!=id_usuario"><i class="fa fa-link fa-fw"></i> Añadir</button>
         			<hr/>
         	</div>
         </div>
 	</form>
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarGrupo(id_grupo)">Guardar grupo</button>
-    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarGrupo(id_grupo)" ng-if="id_grupo>0">Eliminar grupo</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove fa-fw"></i> Cerrar</button>
+    <button type="button" class="btn btn-primary" id="accion_modal" ng-click="guardarGrupo(id_grupo)"><i class="fa fa-save fa-fw"></i> Guardar grupo</button>
+    <button type="button" class="btn btn-danger" id="eliminar" ng-click="desactivarGrupo(id_grupo)" ng-if="id_grupo>0"><i class="fa fa-trash-o fa-fw"></i> Eliminar grupo</button>
 </div>
 </div>
