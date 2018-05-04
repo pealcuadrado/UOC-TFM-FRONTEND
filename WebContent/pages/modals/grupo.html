@@ -11,17 +11,20 @@
         	<label>Nombre del grupo</label>
             <input class="form-control" placeholder="Título del grupo" ng-model="nombre_grupo" ng-value="nombre_grupo"></input>
         </div>
-        <div>
+        <div ng-show="id_grupo>0">
         	<div ng-repeat="miembro in infoGrupo.miembros"> 
         			<i class="fa fa-user fa-fw"></i> {{miembro.nombre}} {{miembro.apellido}}
         			<button type="button" class="btn btn-warning" ng-click="desvincularUsuario(miembro.id_usuario, id_grupo)" ng-if="miembro.id_usuario!=id_usuario"><i class="fa fa-unlink fa-fw"></i> Desvincular</button>
         		<hr/>
         	</div>
         </div>
-        <div>
-        	<div class="form-group input-group">
+        <div ng-show="id_grupo>0">
+        	<div class="form-group">
         		<label>Buscar usuarios</label>
-	            <input type="text" class="form-control" ng-model="textoBusqueda" ng-change="buscarUsuarios()"></input>
+        		<div class="input-group">
+	            	<input type="text" class="form-control" ng-model="textoBusqueda" ng-change="buscarUsuarios()"></input>
+	            	<span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+	            </div>
 	        </div>
 	        <div ng-repeat="usuario in resultadoUsuarios"> 
         			{{usuario.nombre}} {{usuario.apellido}} ({{usuario.email}})

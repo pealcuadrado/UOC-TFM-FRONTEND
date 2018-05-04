@@ -71,14 +71,20 @@
 														           </label>
 														     </div>
 														    <div ng-if="lista.tipoLista=='REPARTICION'">
-						                    					<span id="item_{{item.idItem}}">{{item.nombre}}</span>
+														    	<div class="input-group col-xs-8 col-md-6 item-repart">
+														    		<span class="input-group-addon"><label>{{item.nombre}}</label></span>
+														    		<input type="text" class="form-control" id="item_value_{{item.idItem}}" ng-model="item.valor" ng-blur="guardarItem(lista.idLista,id_grupo,'REPARTICION',item.idItem)"></input>
+														    		<span class="input-group-addon"><a href="" ng-click="eliminarItem(lista.idLista,item.idItem,id_grupo)"><i class="fa fa-trash-o fa-fw"></i></a></span>
+																</div>
+						                    					<!--<span id="item_{{item.idItem}}">{{item.nombre}}</span>
 						                    					<input type="text" id="item_value_{{item.idItem}}" ng-model="item.valor" ng-blur="guardarItem(lista.idLista,id_grupo,'REPARTICION',item.idItem)"></input>
-						                    					<button type="button" class="btn btn-warning" ng-click="eliminarItem(lista.idLista,item.idItem,id_grupo)">X</button>
+						                    					-->
 						                    				</div>
 						                    			</div>
 						                    			<div class="progress" ng-if="lista.tipoLista=='CHECKLIST'">
 															<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: {{ratio}}" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">{{ratio}}</div>
 														</div>
+														<hr/>
 						                    			
 						                    			<div ng-if="lista.tipoLista=='CHECKLIST'">
 						                    				<div class="row list-element">
@@ -89,7 +95,8 @@
 																</div>
 						                    				</div>
 						                    			</div>
-						                    			<div class="row" ng-if="lista.tipoLista=='REPARTICION'">
+						                    			<div class="row" style="margin:10px;" ng-if="lista.tipoLista=='REPARTICION'">
+						                    				<b>Añadir un nuevo ítem:</b>
 						                    				<div>
 						                    					<div class="col-lg-3">
 								                    					<input class="form-control" placeholder="Item" id="item"></input>
@@ -98,7 +105,7 @@
 							                    					<input class="form-control" placeholder="Valor" id="valor"></input>
 							                    				</div>
 							                    				<div class="col-lg-3">
-							                    					<button type="button" class="btn btn-success" ng-click="guardarItem(lista.idLista,id_grupo,'ASIGNACION',0)">Añadir</button>
+							                    					<button type="button" class="btn btn-success" ng-click="guardarItem(lista.idLista,id_grupo,'ASIGNACION',0)"><i class="fa fa-save fa-fw"></i> Añadir</button>
 							                    				</div>
 						                    				</div>
 						                    			</div>

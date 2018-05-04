@@ -114,7 +114,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			$scope.plantilla='modals/grupo.html';
 			$scope.modal={"titulo":"Grupo"};
 			if(id_grupo==0){
-	          	$scope.id_grupo=id_grupo;
+	          	$scope.id_grupo=0;
 	          	$scope.nombre_grupo="";
 			}else{
 		        $http({

@@ -459,6 +459,10 @@ table.dataTable thead .sorting:after {
 .progress{
 	margin: 30px;
 }
+.item-repart{
+	margin-bottom:10px;
+	margin-left:15px;
+}
 
 
 

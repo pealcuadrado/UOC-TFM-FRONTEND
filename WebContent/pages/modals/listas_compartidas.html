@@ -9,7 +9,10 @@
 	<form role="form">
 		<div class="form-group" >
         	<label>Filtro:</label>
-            <input class="form-control" placeholder="Filtro" ng-model="filtro" ng-value="filtro" ng-change="buscarListasCompartidas()"></input>
+        	<div class="input-group">
+            	<input class="form-control" placeholder="Filtro" ng-model="filtro" ng-value="filtro" ng-change="buscarListasCompartidas()"></input>
+        		<span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+        	</div>
         </div>
         <div>
         	<div ng-repeat="lista in resultadolistas"> 
