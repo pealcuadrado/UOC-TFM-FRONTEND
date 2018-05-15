@@ -44,9 +44,8 @@ listoplan.controller('datosUsuarioController', function($scope,$http,InfoUsuario
 
 listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 	$scope.refrescarModal= function(elemento,id,id_grupo){
-		console.log(id_grupo)
+		console.log(id)
 		if(elemento=="nota"){
-			$scope.plantilla='modals/nota.html';
 			//$("#contenido_modal").load("modals/nota.html");
 			$scope.modal={"titulo":"Nota"};
 			//si tiene id, recuperar la información para visualizar o modificar
@@ -62,10 +61,11 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 			      	  url: reqUrl,
 			      	  headers: {"token":InfoUsuario.token},
 			      	}).then(function successCallback(response) {
-			          	$scope.id_nota=response.data.idNota;
-			          	$scope.id_grupo=id_grupo;
-			          	$scope.titulo=response.data.titulo;
-			          	$scope.contenido=response.data.contenido;
+			      		$scope.id_nota=response.data.idNota;
+			      		$scope.id_grupo=id_grupo;
+			      		$scope.titulo=response.data.titulo;
+			      		$scope.contenido=response.data.contenido;
+			          	
 			      	}, function errorCallback(response) {
 			      		 console.log(response.data.status);
 			      	});
@@ -76,6 +76,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 	          	$scope.titulo="";
 	          	$scope.contenido="";
 			}
+			$scope.plantilla='modals/nota.html';
 		}
 		if(elemento=="lista"){
 			$scope.plantilla='modals/lista.html';
@@ -113,6 +114,7 @@ listoplan.controller('modalController', function($scope,$http,InfoUsuario) {
 		if(elemento=="grupo"){
 			$scope.plantilla='modals/grupo.html';
 			$scope.modal={"titulo":"Grupo"};
+			$("#ok_grupo").hide();
 			if(id_grupo==0){
 	          	$scope.id_grupo=0;
 	          	$scope.nombre_grupo="";
@@ -168,7 +170,7 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario,$rootSco
 	$scope.guardarNota=function(id_nota,id_grupo){
 		$("#error_nota").hide();
 		$("#ok_nota").hide();
-		if($scope.titulo==undefined || $scope.titulo.length==0){
+		if($("#tituloNota").val()==undefined || $("#tituloNota").val().length==0){
 			$("#error_nota").show();
 			$scope.error_msg="La nota debe tener un título";
 			return;
@@ -193,13 +195,11 @@ listoplan.controller('notaController',function($scope,$http,InfoUsuario,$rootSco
 	    	  data:{
 	    		  "id":id_grupo.toString(),
 	    		  "idNota":id_nota.toString(),
-	    		  "titulo":$scope.titulo,
-	    		  "contenido":$scope.contenido,
+	    		  "titulo":$("#tituloNota").val(),
+	    		  "contenido":$("#contenidoNota").val(),
 	    		  "ambito":reqAmbito
 	    	  }
 	    	}).then(function successCallback(response) {
-		        	$("#ok_nota").show();
-		        	$scope.ok_msg="La nota se ha guardado correctamente";
 		        	alert("La nota se ha guardado correctamente");
 		        	$rootScope.$broadcast('modificarListadoNotas', id_grupo);
 		        	$('#modal_generico').modal('toggle');
@@ -278,7 +278,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 	$scope.guardarLista=function(id_lista,id_grupo){
 		$("#error_lista").hide();
 		$("#ok_lista").hide();
-		if($scope.nombre==undefined || $scope.nombre.length==0){
+		if($("#nombreLista").val()==undefined || $("#nombreLista").val()==0){
 			$("#error_lista").show();
 			$scope.error_msg="La lista debe tener un nombre";
 			return;
@@ -308,14 +308,12 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 	    	  data:{
 	    		  "id":id_grupo.toString(),
 	    		  "idLista":id_lista.toString(),
-	    		  "nombre":$scope.nombreLista,
-	    		  "descripcion":$scope.descripcion,
+	    		  "nombre":$("#nombreLista").val(),
+	    		  "descripcion":$("#descripcion").val(),
 	    		  "tipoLista":$scope.tipo_lista,
 	    		  "ambito":reqAmbito
 	    	  }
 	    	}).then(function successCallback(response) {
-		        	$("#ok_lista").show();
-		        	$scope.ok_msg="La lista se ha guardado correctamente";
   		        	alert("La lista se ha guardado correctamente");
   		        	$rootScope.$broadcast('modificarListadoListas', id_grupo);
   		        	$('#modal_generico').modal('toggle');
@@ -389,7 +387,7 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 		      	});
 	    };
 	    
-	    $scope.guardarItem=function(id_lista,id_grupo,tipoLista,id_item){
+	    $scope.guardarItem=function(id_lista,id_grupo,tipoLista,id_item,valor){
 			var reqAmbito;
 			var reqUrl;
 			if(id_grupo==0){
@@ -400,25 +398,21 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 			var reqValor;
 			var reqItem;
 			if(tipoLista=="CHECKLIST"){
-				reqItem=$("#item_chk").val();
+				reqItem=$("#item_chk_"+id_lista).val();
 				reqValor="0";
 			}else{
-				reqItem=$("#item").val();
-				reqValor=$("#valor").val();
+				reqItem=$("#nuevo_item_"+id_lista).val();
+				reqValor=$("#nuevo_valor_"+id_lista).val();
 			}
 			if(id_item==0){
 				reqUrl=url+"listas/nuevo_item";
 			}else{
 				reqUrl=url+"listas/modificacion_item";
 				reqItem=$("#item_"+id_item).text();
-				reqValor=$("#item_value_"+id_item).val();
 				if(tipoLista=="CHECKLIST"){
-					reqValor=$("#item_value_"+id_item).is(":checked");
-					if(reqValor==true){
-						reqValor="1";
-					}else{
-						reqValor="0";
-					}
+					reqValor=valor;
+				}else{
+					reqValor=$("#repart_item_value_"+id_item).val();
 				}
 			}
 		    $http({
@@ -436,6 +430,9 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 		    	  }
 		    	}).then(function successCallback(response) {
 		    		$scope.getItemsLista(id_lista,id_grupo);
+		    		$('#guardado_'+id_lista).fadeIn('slow', function(){
+		                $('#guardado_'+id_lista).delay(2000).fadeOut(); 
+		             });
 		    	  }, function errorCallback(response) {
 		  				console.log(response.data.status);	
 		    	  });
@@ -482,8 +479,8 @@ listoplan.controller('listaController',function($scope,$http,InfoUsuario,$rootSc
 		    		  "ambito":ambito
 		    	  }
 		    	}).then(function successCallback(response) {
-		    		$("#ok_grupo").show();
-					$scope.ok_msg="La lista se ha copiado correctamente";
+					alert("La visibilidad de la lista se ha modificado correctamente");
+					$('#modal_generico').modal('toggle');
 		    	  }, function errorCallback(response) {
 		  				$("#error_grupo").show();
 		  				$scope.error_msg="Se ha producido un error al copiar la lista";
@@ -569,7 +566,7 @@ listoplan.controller('gruposController', function($scope,$http,InfoUsuario,InfoG
 	    	  url: reqUrl,
 	    	  headers: {"token":InfoUsuario.token},
 	    	  data:{
-	    		  "nombreGrupo":$scope.nombre_grupo,
+	    		  "nombreGrupo":$("#nombre_grupo").val(),
 	    		  "idGrupo":id_grupo.toString()
 	    	  }
 	    	}).then(function successCallback(response) {

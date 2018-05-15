@@ -9,7 +9,7 @@
 	<form role="form">
 		<div class="form-group" >
         	<label>Nombre del grupo</label>
-            <input class="form-control" placeholder="Título del grupo" ng-model="nombre_grupo" ng-value="nombre_grupo"></input>
+            <input class="form-control" placeholder="Título del grupo" id="nombre_grupo" ng-value="nombre_grupo"></input>
         </div>
         <div ng-show="id_grupo>0">
         	<div ng-repeat="miembro in infoGrupo.miembros"> 
